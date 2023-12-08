@@ -21,7 +21,7 @@ public class CreateCourierTest {
         Response loginResponse = courierClient.login(fromCourier(courier));
         int id = loginResponse.path("id");
         courierClient.deleteCourier(id);
-        
+
     }
 
     @Before
