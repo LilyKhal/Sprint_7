@@ -14,12 +14,13 @@ import static edu.praktikum.sprint_7.utils.Utils.randomString;
 import static org.junit.Assert.assertEquals;
 
 public class CreateCourierTest {
+    CourierClient courierClient;
     private static final String BASE_URL = "https://qa-scooter.praktikum-services.ru";
 
-    public void loginAndDelete(CourierClient client, Courier courier) {
-        Response loginResponse = client.login(fromCourier(courier));
+    public void loginAndDelete(Courier courier) {
+        Response loginResponse = courierClient.login(fromCourier(courier));
         int id = loginResponse.path("id");
-        client.deleteCourier(id);
+        courierClient.deleteCourier(id);
 //        Response deleteResponse = client.deleteCourier(id);
 //        assertEquals("delete failed", 200, deleteResponse.statusCode());
     }
@@ -27,36 +28,34 @@ public class CreateCourierTest {
     @Before
     public void setUp(){
         RestAssured.baseURI = BASE_URL;
+        courierClient = new CourierClient();
     }
 
     @Test
     public void createCourierTest () {
         Courier courier = randomCourier();
-        CourierClient courierClient = new CourierClient();
 
         Response createResponse = courierClient.create(courier);
         assertEquals("Неверный статус код (create)",201, createResponse.statusCode());
-        assertEquals("Тело ответ не верное (create)",true, createResponse.path("ok"));
+        assertEquals("Тело ответа не верное (create)",true, createResponse.path("ok"));
 
-        loginAndDelete(courierClient, courier);
+        loginAndDelete(courier);
     }
 
     @Test
     public void createSameCourierTest() {
         Courier courier = randomCourier();
-        CourierClient courierClient = new CourierClient();
 
         courierClient.create(courier);
 
         Response duplicateCreateResponse = courierClient.create(courier);
         assertEquals("Неверный статус код (create)",409, duplicateCreateResponse.statusCode());
 //        assertEquals("Тело ответа не совпадает", "Этот логин уже используется",duplicateCreateResponse.path("message"));
-        loginAndDelete(courierClient, courier);
+        loginAndDelete(courier);
     }
     @Test
     public void createCourierWithEmptyParameterTest(){
         Courier courierWithoutLogin = new Courier("","98765","Alex");
-        CourierClient courierClient = new CourierClient();
 
         Response courierWithoutLoginResponse  = courierClient.create(courierWithoutLogin);
         assertEquals("Неверный статус код", 400,courierWithoutLoginResponse.statusCode());
@@ -72,13 +71,12 @@ public class CreateCourierTest {
     public void createCourierWithSameLoginTest() {
         String login = randomString(8);
         Courier courier = new Courier(login, randomString(8), randomString(11));
-        CourierClient courierClient = new CourierClient();
 
         courierClient.create(courier);
         Courier courierWithSameLogin = new Courier(login, randomString(8), randomString(11));
         Response createCourierWithSameLoginResponse = courierClient.create(courierWithSameLogin);
         assertEquals("Неверный статус код (create)",409, createCourierWithSameLoginResponse.statusCode());
       //  assertEquals("Тело ответа не совпадает", "Этот логин уже используется",createCourierWithSameLoginResponse.path("message"));
-        loginAndDelete(courierClient, courier);
+        loginAndDelete(courier);
     }
 }
