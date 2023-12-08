@@ -17,4 +17,12 @@ public class OrderClient {
                 .when()
                 .post(ORDER_URL);
     }
+    @Step("Получение списка заказов")
+    public Response getOrderList(){
+        return given()
+                .header("Content-type", "application/json")
+                .when()
+                .get(ORDER_URL);
+
+    }
 }
