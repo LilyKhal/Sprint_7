@@ -35,7 +35,7 @@ public class CourierClient {
         return given()
                 .header("Content-type", "application/json")
                 .and()
-                .body(String.format("{\"id\": \"\"}", id))
+                .body(String.format("{\"id\": \"%d\"}", id))
                 .when()
                 .delete(COURIER_ID);
     }

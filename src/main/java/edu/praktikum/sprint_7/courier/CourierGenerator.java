@@ -10,8 +10,5 @@ public class CourierGenerator {
     public static Courier randomCourier() {
 
         return new Courier(randomString(6), randomString(8), randomString(11));
-//                .withLogin(randomString())
-//                .withPassword(randomString())
-//                .withFirstName(randomString());
     }
 }

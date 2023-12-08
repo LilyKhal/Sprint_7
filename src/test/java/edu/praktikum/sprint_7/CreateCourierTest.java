@@ -21,8 +21,7 @@ public class CreateCourierTest {
         Response loginResponse = courierClient.login(fromCourier(courier));
         int id = loginResponse.path("id");
         courierClient.deleteCourier(id);
-//        Response deleteResponse = client.deleteCourier(id);
-//        assertEquals("delete failed", 200, deleteResponse.statusCode());
+        
     }
 
     @Before
@@ -50,6 +49,7 @@ public class CreateCourierTest {
 
         Response duplicateCreateResponse = courierClient.create(courier);
         assertEquals("Неверный статус код (create)",409, duplicateCreateResponse.statusCode());
+//       В документации текст тела ответа, не совпадает с реально возвращаемым текстом
 //        assertEquals("Тело ответа не совпадает", "Этот логин уже используется",duplicateCreateResponse.path("message"));
         loginAndDelete(courier);
     }
@@ -76,6 +76,7 @@ public class CreateCourierTest {
         Courier courierWithSameLogin = new Courier(login, randomString(8), randomString(11));
         Response createCourierWithSameLoginResponse = courierClient.create(courierWithSameLogin);
         assertEquals("Неверный статус код (create)",409, createCourierWithSameLoginResponse.statusCode());
+        // В документации текст тела ответа, не совпадает с реально возвращаемым текстом
       //  assertEquals("Тело ответа не совпадает", "Этот логин уже используется",createCourierWithSameLoginResponse.path("message"));
         loginAndDelete(courier);
     }

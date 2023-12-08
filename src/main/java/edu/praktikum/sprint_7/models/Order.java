@@ -24,6 +24,4 @@ public class Order {
         this.comment = comment;
         this.color = color;
     }
-
-
 }
